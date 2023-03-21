@@ -1,4 +1,4 @@
-package zerobase.dividend;
+package com.zerobase.dividend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
