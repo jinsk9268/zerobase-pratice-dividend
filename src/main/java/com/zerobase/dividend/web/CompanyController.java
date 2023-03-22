@@ -1,11 +1,14 @@
 package com.zerobase.dividend.web;
 
 import com.zerobase.dividend.model.Company;
+import com.zerobase.dividend.persist.entity.CompanyEntity;
 import com.zerobase.dividend.service.CompanyService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/company") // 공통경로 설정
@@ -18,9 +21,15 @@ public class CompanyController {
         return null;
     }
 
+    /**
+     * 모든 회사 조회
+     * @return
+     */
     @GetMapping
     public ResponseEntity<?> searchCompany() {
-        return null;
+        List<CompanyEntity> companies = this.companyService.getAllCompany();
+
+        return ResponseEntity.ok(companies);
     }
 
     /**
