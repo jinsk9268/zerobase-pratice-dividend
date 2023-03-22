@@ -16,9 +16,9 @@ import java.util.List;
 @AllArgsConstructor // 모든 필드를 초기화하는 생성자 코드를 사용할 수 있는 어노테이션
 public class ScrapedResult {
     private Company company;
-    private List<Dividend> dividendEntities;
+    private List<Dividend> dividends;
 
     public ScrapedResult() {
-        this.dividendEntities = new ArrayList<>();
+        this.dividends = new ArrayList<>();
     }
 }
