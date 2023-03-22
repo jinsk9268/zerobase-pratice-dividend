@@ -16,12 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class YahooFinanceScraper {
+public class YahooFinanceScraper implements Scraper{
     // 값이 변하면 안되기 때문에 상수로 선언
     private static final String STATISTIC_URL = "https://finance.yahoo.com/quote/%s/history?period1=%d&period2=%d&interval=1mo";
     private static final String SUMMARY_URL = "https://finance.yahoo.com/quote/%s?p=%s";
     private static final long START_DATE = 86400; // 시작날짜는 바꿀필요 없음 -> 60초 * 60분 * 24시간
 
+    @Override
     public ScrapedResult scrap(Company company) {
         // 강의에선 var로 사용
         ScrapedResult scrapedResult = new ScrapedResult();
@@ -76,6 +77,7 @@ public class YahooFinanceScraper {
         return scrapedResult;
     }
 
+    @Override
     public Company scrapCompanyByTicker(String ticker) {
         String url = String.format(SUMMARY_URL, ticker, ticker);
 
