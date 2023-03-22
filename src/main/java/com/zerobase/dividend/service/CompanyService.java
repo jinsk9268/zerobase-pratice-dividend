@@ -23,7 +23,11 @@ public class CompanyService {
     private final DividendRepository dividendRepository;
 
     public Company save(String ticker) {
-        return null;
+        if (this.companyRepository.existsByTicker(ticker)) {
+            throw new RuntimeException("already exists ticker -> " + ticker);
+        }
+
+        return this.storeCompanyAndDividend(ticker);
     }
 
     // 클래서 밖에선 메서드 호출할 수 없음
