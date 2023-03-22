@@ -56,4 +56,8 @@ public class CompanyService {
 
         return company;
     }
+
+    public List<CompanyEntity> getAllCompany() {
+        return this.companyRepository.findAll();
+    }
 }
