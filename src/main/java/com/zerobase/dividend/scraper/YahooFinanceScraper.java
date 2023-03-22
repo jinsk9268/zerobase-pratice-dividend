@@ -53,8 +53,8 @@ public class YahooFinanceScraper {
 
                 String[] splits = txt.split(" ");
                 int month = Month.strToNumber(splits[0]);
-                int day = Integer.valueOf(splits[1].replace(",", ""));
-                int year = Integer.valueOf(splits[2]);
+                int day = Integer.parseInt(splits[1].replace(",", ""));
+                int year = Integer.parseInt(splits[2]);
                 String dividend = splits[3];
 
                 if (month < 0) {
