@@ -1,8 +1,8 @@
 package com.zerobase.dividend.scraper;
 
+import com.zerobase.dividend.model.Company;
 import com.zerobase.dividend.model.Dividend;
 import com.zerobase.dividend.model.ScrapedResult;
-import com.zerobase.dividend.model.Company;
 import com.zerobase.dividend.model.constants.Month;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -19,6 +19,7 @@ import java.util.List;
 public class YahooFinanceScraper {
     // 값이 변하면 안되기 때문에 상수로 선언
     private static final String STATISTIC_URL = "https://finance.yahoo.com/quote/%s/history?period1=%d&period2=%d&interval=1mo";
+    private static final String SUMMARY_URL = "https://finance.yahoo.com/quote/%s?p=%s";
     private static final long START_DATE = 86400; // 시작날짜는 바꿀필요 없음 -> 60초 * 60분 * 24시간
 
     public ScrapedResult scrap(Company company) {
@@ -73,5 +74,25 @@ public class YahooFinanceScraper {
         }
 
         return scrapedResult;
+    }
+
+    public Company scrapCompanyByTicker(String ticker) {
+        String url = String.format(SUMMARY_URL, ticker, ticker);
+
+        try {
+            // Jsoup connection을 통해 Document 가져오기
+            Document document = Jsoup.connect(url).get();
+            Element titleEle = document.getElementsByTag("h1").get(0);
+            // MSFT - Microsoft Corporation 형태이므로 깔끔하게 출력
+            String title = titleEle.text().split(" - ")[1].trim();
+
+            return Company.builder()
+                    .ticker(ticker)
+                    .name(title)
+                    .build();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
