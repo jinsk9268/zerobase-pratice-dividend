@@ -4,6 +4,8 @@ import com.zerobase.dividend.model.Company;
 import com.zerobase.dividend.persist.entity.CompanyEntity;
 import com.zerobase.dividend.service.CompanyService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
@@ -22,12 +24,13 @@ public class CompanyController {
     }
 
     /**
-     * 모든 회사 조회
+     * 페이징 기법이 적용된 회사 정보 조회
+     * @param pageable : 중간에 변경되지 않도록 final 선언
      * @return
      */
     @GetMapping
-    public ResponseEntity<?> searchCompany() {
-        List<CompanyEntity> companies = this.companyService.getAllCompany();
+    public ResponseEntity<?> searchCompany(final Pageable pageable) {
+        Page<CompanyEntity> companies = this.companyService.getAllCompany(pageable);
 
         return ResponseEntity.ok(companies);
     }
