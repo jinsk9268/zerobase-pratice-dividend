@@ -8,6 +8,7 @@ import com.zerobase.dividend.persist.entity.CompanyEntity;
 import com.zerobase.dividend.persist.entity.DividendEntity;
 import com.zerobase.dividend.scraper.Scraper;
 import lombok.AllArgsConstructor;
+import org.apache.commons.collections4.Trie;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,9 +17,11 @@ import org.springframework.util.ObjectUtils;
 import java.util.List;
 import java.util.stream.Collectors;
 
+// 싱글톤으로 관리, 이 프로그램이 실행되는 동안 CompanyService 인스턴스는 한번만 생성, 한 인스턴스만 사용, 프로그램 전체에서 한개의 인스턴스만 사용되어야할 때
 @Service
 @AllArgsConstructor // Bean이 생성될 때 사용할 수 있도록
 public class CompanyService {
+    private final Trie trie; // AppConfig에 Bean으로 등록되어있는 trie가 주입
     private final Scraper yahooFiananceScraper;
 
     private final CompanyRepository companyRepository;
@@ -61,5 +64,9 @@ public class CompanyService {
 
     public Page<CompanyEntity> getAllCompany(Pageable pageable) {
         return this.companyRepository.findAll(pageable);
+    }
+
+    public void addAutoCompleteKeyword(String keyword) {
+        this.trie.put(keyword, null); // 자동완성 기능만 구현할거기때문에 value에는 null
     }
 }
