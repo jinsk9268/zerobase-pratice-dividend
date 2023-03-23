@@ -58,7 +58,7 @@ public class CompanyController {
 
         // trie에서 데이터를 가져오기위해선 trie에 회사명이 저장되어 있어야 한다
         // 그래서 회사를 추가할때마다 trie에 회사명도 추가
-        this.companyService.addAutocompleteKeyword(company.getName());
+        // this.companyService.addAutocompleteKeyword(company.getName());
 
         return ResponseEntity.ok(company);
     }
