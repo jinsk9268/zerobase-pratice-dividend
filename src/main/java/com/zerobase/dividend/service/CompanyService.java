@@ -66,7 +66,7 @@ public class CompanyService {
         return this.companyRepository.findAll(pageable);
     }
 
-    public void addAutoCompleteKeyword(String keyword) {
+    public void addAutocompleteKeyword(String keyword) {
         this.trie.put(keyword, null); // 자동완성 기능만 구현할거기때문에 value에는 null
     }
 }

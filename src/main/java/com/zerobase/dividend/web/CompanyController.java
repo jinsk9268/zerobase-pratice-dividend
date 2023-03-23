@@ -10,16 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/company") // 공통경로 설정
 @AllArgsConstructor
 public class CompanyController {
     private final CompanyService companyService;
 
-    @GetMapping("/auto-complete")
-    public ResponseEntity<?> autoComplete(@RequestParam String keyword) {
+    @GetMapping("/autocomplete")
+    public ResponseEntity<?> autocomplete(@RequestParam String keyword) {
         return null;
     }
 
