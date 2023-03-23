@@ -71,7 +71,9 @@ public class CompanyService {
     }
 
     public List<String> autocomplete(String keyword) {
-        // 찾을대는 preFixMap으로 가져온다, keySet을 리스트 형태로 반환
+        // 찾을때는 preFixMap으로 가져온다, keySet을 리스트 형태로 반환
+        // 나중에 수가 너무 많아지면 .stream().limit(10)으로 제한을 두거나
+        // pageable 사용해서 추가
         return (List<String>) this.trie.prefixMap(keyword).keySet()
                 .stream().collect(Collectors.toList());
     }
