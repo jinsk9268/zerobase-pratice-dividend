@@ -69,4 +69,10 @@ public class CompanyService {
     public void addAutocompleteKeyword(String keyword) {
         this.trie.put(keyword, null); // 자동완성 기능만 구현할거기때문에 value에는 null
     }
+
+    public List<String> autocomplete(String keyword) {
+        // 찾을대는 preFixMap으로 가져온다, keySet을 리스트 형태로 반환
+        return (List<String>) this.trie.prefixMap(keyword).keySet()
+                .stream().collect(Collectors.toList());
+    }
 }
