@@ -19,7 +19,11 @@ public class CompanyController {
     @GetMapping("/autocomplete")
     public ResponseEntity<?> autocomplete(@RequestParam String keyword) {
         return ResponseEntity.ok(
-                this.companyService.autocomplete(keyword)
+                // 자동완성 Trie
+                // this.companyService.autocomplete(keyword)
+
+                // 자동완성 DB LIKE
+                this.companyService.getCompanyNamesByKeyword(keyword)
         );
     }
 
