@@ -3,6 +3,7 @@ package com.zerobase.dividend.service;
 import com.zerobase.dividend.model.Company;
 import com.zerobase.dividend.model.Dividend;
 import com.zerobase.dividend.model.ScrapedResult;
+import com.zerobase.dividend.model.constants.CacheKey;
 import com.zerobase.dividend.persist.CompanyRepository;
 import com.zerobase.dividend.persist.DividendRepository;
 import com.zerobase.dividend.persist.entity.CompanyEntity;
@@ -29,7 +30,7 @@ public class FinanceService {
     // key : 이 메소드의 파라미터명
     // 캐시에 데이터가 없을경우 로직 실행해서 리턴값 캐시에 추가해주고
     // 캐시에 데이터가 있는 경우 로직을 실행하지 않고 캐시에 있는 데이터 반환
-    @Cacheable(key = "#companyName", value = "finance")
+    @Cacheable(key = "#companyName", value = CacheKey.KEY_FINANCE)
     public ScrapedResult getDividendByCompanyName(String companyName) {
         log.info("search company -> " + companyName);
 
