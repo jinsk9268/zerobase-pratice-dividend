@@ -29,6 +29,8 @@ public class CacheConfig {
         RedisCacheConfiguration conf = RedisCacheConfiguration.defaultCacheConfig()
                 .serializeKeysWith(RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new GenericJackson2JsonRedisSerializer()));
+                // 캐시 비우기 -> 레디스 전체에 대한 ttl 설정, 원하는 키에 대해 따로하고 싶으면 검색
+                // .entryTtl(기간)
 
         // RedisCacheManager 리턴, 커넥션은 파라미터로 받은 redisConnectionFactory, 캐시 디폴트는 위에서 생성한 conf
         return RedisCacheManager.RedisCacheManagerBuilder
