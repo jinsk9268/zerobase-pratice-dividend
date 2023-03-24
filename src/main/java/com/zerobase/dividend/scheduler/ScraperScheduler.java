@@ -46,6 +46,17 @@ public class ScraperScheduler {
                             this.dividendRepository.save(e);
                         }
                     });
+
+            // 연속적으로 스크래핑 대상 사이트 서버에 요청을 날리지 않도록 일시정지
+            // 안그러면 요청한 서버에 과부하가 걸리기 때문
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) { // 인터럽트 받는 스레드가 blocking 될 수 있는 메소드 실행할때 발생
+                e.printStackTrace();
+                // 단순히 메시지만 출력하고 종료는 적절한 처리가 아니므로 현재쓰레드 인터럽트 처리
+                Thread.currentThread().interrupt();
+            }
+
         }
     }
 }
