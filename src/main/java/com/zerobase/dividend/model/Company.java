@@ -1,7 +1,9 @@
 package com.zerobase.dividend.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 따로 모델 클래스를 만드는 이유는 Entity 클래스는 DB 테이블과 직접적으로 매핑되기 위해 만든 클래스 이므로
@@ -16,6 +18,8 @@ import lombok.Data;
  * 그 역할을 일반화해서 코드를 재사용할 수 있도록 코드의 중복을 없에주는 것이다
  */
 @Data // 게터, 세터, 투스트링, 이퀄 => 어노테이션 붙일땐 주의!
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder // 디자인 패턴중에 빌더 패턴을 사용할수 있게
 public class Company {
     private String ticker;
