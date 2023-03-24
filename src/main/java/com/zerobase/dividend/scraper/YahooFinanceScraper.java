@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class YahooFinanceScraper implements Scraper{
+public class YahooFinanceScraper implements Scraper {
     // 값이 변하면 안되기 때문에 상수로 선언
     private static final String STATISTIC_URL = "https://finance.yahoo.com/quote/%s/history?period1=%d&period2=%d&interval=1mo";
     private static final String SUMMARY_URL = "https://finance.yahoo.com/quote/%s?p=%s";
@@ -64,10 +64,9 @@ public class YahooFinanceScraper implements Scraper{
                     throw new RuntimeException("Unexpected Month enum value -> " + splits[0]);
                 }
 
-                dividends.add(Dividend.builder()
-                        .date(LocalDateTime.of(year, month, day, 0, 0))
-                        .dividend(dividend)
-                        .build());
+                dividends.add(
+                        new Dividend(LocalDateTime.of(year, month, day, 0, 0), dividend)
+                );
             }
 
             scrapedResult.setDividends(dividends);
@@ -89,10 +88,7 @@ public class YahooFinanceScraper implements Scraper{
             // MSFT - Microsoft Corporation 형태이므로 깔끔하게 출력
             String title = titleEle.text().split(" - ")[1].trim();
 
-            return Company.builder()
-                    .ticker(ticker)
-                    .name(title)
-                    .build();
+            return new Company(ticker, title);
         } catch (IOException e) {
             e.printStackTrace();
         }
