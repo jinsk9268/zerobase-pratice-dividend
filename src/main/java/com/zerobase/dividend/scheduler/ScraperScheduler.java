@@ -34,10 +34,7 @@ public class ScraperScheduler {
             // 적절한 로그를 남기는 습관 중요함
             log.info("scraping scheduler is started -> " + company.getName());
             ScrapedResult scrapedResult = this.yahooFinanceScrapper.scrap(
-                    Company.builder()
-                            .name(company.getName())
-                            .ticker(company.getTicker())
-                            .build()
+                    new Company(company.getName(), company.getTicker())
             );
 
             // 스크래핑한 배당금 정보 중 데이터베이스에 없는 값만 저장
