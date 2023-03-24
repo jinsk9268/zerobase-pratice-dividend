@@ -8,11 +8,13 @@ import com.zerobase.dividend.persist.entity.CompanyEntity;
 import com.zerobase.dividend.persist.entity.DividendEntity;
 import com.zerobase.dividend.scraper.Scraper;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Slf4j
 @Component
 @AllArgsConstructor // repository가 초기화 될 수 있도록
 public class ScraperScheduler {
@@ -28,6 +30,8 @@ public class ScraperScheduler {
 
         // 회사 마다 배당금 정보를 스크래핑
         for (CompanyEntity company : companies) { // var로 선언해도됨
+            // 적절한 로그를 남기는 습관 중요함
+            log.info("scraping scheduler is started -> " + company.getName());
             ScrapedResult scrapedResult = this.yahooFinanceScrapper.scrap(
                     Company.builder()
                             .name(company.getName())
