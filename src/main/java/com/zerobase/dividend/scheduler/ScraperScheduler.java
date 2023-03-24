@@ -2,6 +2,7 @@ package com.zerobase.dividend.scheduler;
 
 import com.zerobase.dividend.model.Company;
 import com.zerobase.dividend.model.ScrapedResult;
+import com.zerobase.dividend.model.constants.CacheKey;
 import com.zerobase.dividend.persist.CompanyRepository;
 import com.zerobase.dividend.persist.DividendRepository;
 import com.zerobase.dividend.persist.entity.CompanyEntity;
@@ -30,7 +31,7 @@ public class ScraperScheduler {
     // allEntries - 레디스 캐쉬의 value에 해당하는 모든 키를 지우겠다
     // 모두 지우지 않으려면 key = "" 와 같이 특정 키를 넣으면 됨
     // 그래서 스케줄러 동작할 때마다 캐시도 비워짐, 나중에 다시 검색 시 캐시 저장
-    @CacheEvict(value = "finance", allEntries = true)
+    @CacheEvict(value = CacheKey.KEY_FINANCE, allEntries = true)
     @Scheduled(cron = "${scheduler.scrap.yahoo}") // 매일 정각 실행
     public void yahooFinanceScheduling() {
         log.info("scrapping scheduler is started");
