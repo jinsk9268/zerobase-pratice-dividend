@@ -13,6 +13,6 @@ spring:
     defer-datasource-initialization: true # 데이터 초기화 옵션 설정
   datasource:
     driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:dayone;DB_CLOSE_DELAY=-1
+    url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1
     username: sa
     password:
