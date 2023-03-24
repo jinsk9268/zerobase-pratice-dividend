@@ -36,6 +36,16 @@ public class ScraperScheduler {
     public void yahooFinanceScheduling() {
         log.info("scrapping scheduler is started");
         // 저장된 모든 회사 목록을 조회
+        /*
+            추가로 생각
+            회사 수가 많아질수록 회사 목록을 벌크로 가져오는데 생각을 해봐야한다
+            회사 수가 많아질수록 데이터의 양도 많아지고
+            한 회사를 스크래핑할때마다 필연적으로 텀(thread sleep)을 뒀기때문에 시간이 많이 소요될 수밖에 없음
+            크론 주기를 설정해서 데이터를 가져오는 것도 쉽지 않을 수 있음
+            이럴때 스프링 배치 사용
+            스프링 배치를 쓰게되면 이런 벌크 데이터에 대해서 작업 처리 통계를 내주거나 로깅처리 등
+            많은 수의 대용량 레코드를 처리하는데 유용한 기능들을 제공
+         */
         List<CompanyEntity> companies = this.companyRepository.findAll();
 
         // 회사 마다 배당금 정보를 스크래핑
@@ -62,7 +72,8 @@ public class ScraperScheduler {
             // 안그러면 요청한 서버에 과부하가 걸리기 때문
             try {
                 Thread.sleep(3000);
-            } catch (InterruptedException e) { // 인터럽트 받는 스레드가 blocking 될 수 있는 메소드 실행할때 발생
+            } catch (
+                    InterruptedException e) { // 인터럽트 받는 스레드가 blocking 될 수 있는 메소드 실행할때 발생
                 e.printStackTrace();
                 // 단순히 메시지만 출력하고 종료는 적절한 처리가 아니므로 현재쓰레드 인터럽트 처리
                 Thread.currentThread().interrupt();
