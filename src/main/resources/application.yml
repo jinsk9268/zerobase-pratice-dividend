@@ -16,6 +16,9 @@ spring:
     url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1
     username: sa
     password:
+  redis:
+    host: localhost # 추후 해당 서버 ip 입력, 포트도 마찬가지로!
+    port: 6379
 scheduler:
   scrap:
       yahoo: "0 0 0 * * *"
