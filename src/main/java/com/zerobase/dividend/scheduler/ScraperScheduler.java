@@ -9,6 +9,8 @@ import com.zerobase.dividend.persist.entity.DividendEntity;
 import com.zerobase.dividend.scraper.Scraper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,7 @@ import java.util.List;
 
 @Slf4j
 @Component
+@EnableCaching
 @AllArgsConstructor // repository가 초기화 될 수 있도록
 public class ScraperScheduler {
     private final CompanyRepository companyRepository;
@@ -23,6 +26,11 @@ public class ScraperScheduler {
     private final Scraper yahooFinanceScrapper;
 
     // 일정 주기마다 수행
+    // value - 레디스 서버 키의 prefix, 앞에서 설정한거 넣어주면됨
+    // allEntries - 레디스 캐쉬의 value에 해당하는 모든 키를 지우겠다
+    // 모두 지우지 않으려면 key = "" 와 같이 특정 키를 넣으면 됨
+    // 그래서 스케줄러 동작할 때마다 캐시도 비워짐, 나중에 다시 검색 시 캐시 저장
+    @CacheEvict(value = "finance", allEntries = true)
     @Scheduled(cron = "${scheduler.scrap.yahoo}") // 매일 정각 실행
     public void yahooFinanceScheduling() {
         log.info("scrapping scheduler is started");
