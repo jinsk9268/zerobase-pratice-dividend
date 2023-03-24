@@ -1,7 +1,6 @@
 package com.zerobase.dividend.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,10 +16,9 @@ import lombok.NoArgsConstructor;
  * 코드의 재사용은 여러 로직의 동작들을 쪼개서 쪼갠 동작간의 유사성을 가진 부분, 비슷한 역할을 하는 동작들을 찾고
  * 그 역할을 일반화해서 코드를 재사용할 수 있도록 코드의 중복을 없에주는 것이다
  */
-@Data // 게터, 세터, 투스트링, 이퀄 => 어노테이션 붙일땐 주의!
+@Data // 게터, 세터, 투스트링, 이퀄 => 어노테이션 붙일땐 주의!, @Builder // 디자인 패턴중에 빌더 패턴을 사용할수 있게
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder // 디자인 패턴중에 빌더 패턴을 사용할수 있게
 public class Company {
     private String ticker;
     private String name;
