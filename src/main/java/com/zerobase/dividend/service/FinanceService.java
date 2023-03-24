@@ -42,10 +42,7 @@ public class FinanceService {
         List<Dividend> dividends = new ArrayList<>();
         for (DividendEntity entity : dividendEntities) {
             dividends.add(
-                    Dividend.builder()
-                            .date(entity.getDate())
-                            .dividend(entity.getDividend())
-                            .build()
+                    new Dividend(entity.getDate(), entity.getDividend())
             );
         }
 
@@ -58,10 +55,7 @@ public class FinanceService {
         //         .collect(Collectors.toList());
 
         return new ScrapedResult(
-                Company.builder()
-                        .ticker(company.getTicker())
-                        .name(company.getName())
-                        .build(),
+                new Company(company.getTicker(), company.getName()),
                 dividends
         );
     }
