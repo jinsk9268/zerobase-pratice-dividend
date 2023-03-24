@@ -8,6 +8,7 @@ import com.zerobase.dividend.persist.DividendRepository;
 import com.zerobase.dividend.persist.entity.CompanyEntity;
 import com.zerobase.dividend.persist.entity.DividendEntity;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -19,6 +20,12 @@ public class FinanceService {
     private final CompanyRepository companyRepository;
     private final DividendRepository dividendRepository;
 
+    // 요청이 자주 들어오는가? -> 자주 들어오겠지
+    // 자주 변경되는 데이터인가? -> 달 or 분기 or 반기마다 업데이트되고, 과거에 지급되었던 배당금 정보가 바뀔일은 거의 없지
+    // 캐시에 사용해도 적합하구나!
+    // redis 서버와의 key, value와 의미가 다르니 주의
+    // key : 이 메소드의 파라미터명
+    @Cacheable(key = "#companyName", value = "finance")
     public ScrapedResult getDividendByCompanyName(String companyName) {
         // 1. 회사명을 기준으로 회사 정보를 조회
         // orElseThrow - 원래는 Optional<CompanyEntity>로 반환받아야 하나
