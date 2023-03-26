@@ -1,5 +1,6 @@
 package com.zerobase.dividend.service;
 
+import com.zerobase.dividend.exception.impl.NoCompanyException;
 import com.zerobase.dividend.model.Company;
 import com.zerobase.dividend.model.Dividend;
 import com.zerobase.dividend.model.ScrapedResult;
@@ -39,7 +40,7 @@ public class FinanceService {
         // 값이 없으면 인자로 넘겨주는 값을 보여주고 있으면 Optional이 벗겨진 알맹이 그대로 보여줘
         // CompanyEntity 그대로 반환타입으로 가질 수 있다
         CompanyEntity company = this.companyRepository.findByName(companyName)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 회사명입니다. -> " + companyName));
+                .orElseThrow(() -> new NoCompanyException());
 
         // 2. 조회된 회사 ID로 배당금 정보 조회
         List<DividendEntity> dividendEntities = this.dividendRepository.findAllByCompanyId(company.getId());
