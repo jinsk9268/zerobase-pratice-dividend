@@ -19,6 +19,8 @@ spring:
   redis:
     host: localhost # 추후 해당 서버 ip 입력, 포트도 마찬가지로!
     port: 6379
+  jwt: # hs512 알고리즘 사용 -> 64바이트 이상의 시크릿키 사용 (특정 문자열 base64로 인코딩)
+    secret: ZGF5b25lLXNwcmluZy1ib290LWRpdmlkZW5kLXByb2plY3QtdHV0b3JpYWwtand0LXNlY3JldC1rZXkK
 scheduler:
   scrap:
       yahoo: "0 0 0 * * *"
