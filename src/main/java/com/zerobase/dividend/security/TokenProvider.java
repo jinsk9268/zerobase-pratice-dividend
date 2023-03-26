@@ -1,11 +1,15 @@
 package com.zerobase.dividend.security;
 
+import com.zerobase.dividend.service.MemberService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
@@ -20,6 +24,8 @@ public class TokenProvider {
 
     @Value("${spring.jwt.secret}")
     private String secretKey;
+
+    private final MemberService memberService;
 
     /**
      * 토큰 생성(발급)
@@ -75,5 +81,15 @@ public class TokenProvider {
         } catch (ExpiredJwtException e) {
             return e.getClaims();
         }
+    }
+
+    // jwt로 부터 인증정보 가져오기
+    public Authentication getAuthentication(String jwt) {
+        UserDetails userDetails = this.memberService.loadUserByUsername(this.getUsername(jwt));
+
+        // 스프링이 지원해주는 토큰 형태로 변경
+        return new UsernamePasswordAuthenticationToken(
+                userDetails, "", userDetails.getAuthorities()
+        );
     }
 }
