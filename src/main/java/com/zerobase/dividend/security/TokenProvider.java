@@ -1,6 +1,7 @@
 package com.zerobase.dividend.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
@@ -43,5 +44,18 @@ public class TokenProvider {
                 .setExpiration(expiredDate) // 토큰 만료 시간
                 .signWith(SignatureAlgorithm.HS512, this.secretKey) // 사용할 암호화 알고리즘, 비밀키
                 .compact(); // 스트링 변환
+    }
+
+    // 토큰으로 부터 클레임 정보를 가져오는 메서드 구현
+    private Claims parseClaims(String token) {
+        // 토큰 만료시간이 경과됐으면 exception 발생하므로 예외처리하기
+        try {
+            return Jwts.parser()
+                    .setSigningKey(this.secretKey)
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims();
+        }
     }
 }
