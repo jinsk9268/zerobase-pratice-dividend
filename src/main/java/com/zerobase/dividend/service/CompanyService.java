@@ -1,5 +1,6 @@
 package com.zerobase.dividend.service;
 
+import com.zerobase.dividend.exception.impl.NoCompanyException;
 import com.zerobase.dividend.model.Company;
 import com.zerobase.dividend.model.ScrapedResult;
 import com.zerobase.dividend.persist.CompanyRepository;
@@ -95,7 +96,7 @@ public class CompanyService {
 
     public String deleteCompany(String ticker) {
         CompanyEntity company = this.companyRepository.findByTicker(ticker)
-                .orElseThrow(() -> new RuntimeException("존재하지 않는 회사입니다."));
+                .orElseThrow(() -> new NoCompanyException());
 
         // companyId로 배당금 정보 지우기
         this.dividendRepository.deleteAllByCompanyId(company.getId());
