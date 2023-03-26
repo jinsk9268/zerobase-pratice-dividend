@@ -1,5 +1,6 @@
 package com.zerobase.dividend.service;
 
+import com.zerobase.dividend.exception.impl.AlreadyExistUserException;
 import com.zerobase.dividend.model.Auth;
 import com.zerobase.dividend.persist.MemberRepository;
 import com.zerobase.dividend.persist.entity.MemberEntity;
@@ -39,7 +40,7 @@ public class MemberService implements UserDetailsService {
         boolean exists = this.memberRepository.existsByUsername(member.getUsername());
 
         if (exists) {
-            throw new RuntimeException("이미 사용중인 아이디 입니다.");
+            throw new AlreadyExistUserException();
         }
 
         // 인코딩된 password로 password 재설정
