@@ -32,4 +32,21 @@ public class AuthController {
                 this.memberService.register(request)
         );
     }
+
+    /**
+     * 로그인 API
+     *
+     * @param request
+     * @return
+     */
+    @PostMapping("/signin")
+    public ResponseEntity<?> signin(@RequestBody Auth.SignIn request) {
+        // 사용자한테 입력받은 아이디, 패스워드 검증
+        MemberEntity member = this.memberService.authenticate(request);
+
+        // 일치한다면 jwt 토큰 생성 후 반환
+        return ResponseEntity.ok(
+                this.tokenProvider.generateToken(member.getUsername(), member.getRoles())
+        );
+    }
 }
