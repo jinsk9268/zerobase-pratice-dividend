@@ -1,6 +1,5 @@
 package com.zerobase.dividend.persist.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,6 +23,7 @@ public class MemberEntity implements UserDetails { // 시큐리티 기능 사용
     private Long id;
     private String username;
     private String password;
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles; // read, write 2개의 권한을 가질 수 있기 때문
 
     @Override
