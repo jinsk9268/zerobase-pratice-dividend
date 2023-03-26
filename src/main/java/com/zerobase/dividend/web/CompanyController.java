@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +34,7 @@ public class CompanyController {
      * @return
      */
     @GetMapping
+    @PreAuthorize("hasRole('READ')")
     public ResponseEntity<?> searchCompany(final Pageable pageable) {
         Page<CompanyEntity> companies = this.companyService.getAllCompany(pageable);
 
@@ -45,6 +47,7 @@ public class CompanyController {
      * @return
      */
     @PostMapping
+    @PreAuthorize("hasRole('WRITE')") // 쓰기권한이 있는 유저만 허용, 이넘 프리픽스의 윗부분(ROLE_XXX)
     public ResponseEntity<?> addCompany(@RequestBody Company request) {
         // 사용자가 입력한 ticker 값
         String ticker = request.getTicker().trim();
