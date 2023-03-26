@@ -1,9 +1,11 @@
 package com.zerobase.dividend.web;
 
 import com.zerobase.dividend.model.Company;
+import com.zerobase.dividend.model.constants.CacheKey;
 import com.zerobase.dividend.persist.entity.CompanyEntity;
 import com.zerobase.dividend.service.CompanyService;
 import lombok.AllArgsConstructor;
+import org.springframework.cache.CacheManager;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class CompanyController {
     private final CompanyService companyService;
+    private final CacheManager redisCacheManager;
 
     @GetMapping("/autocomplete")
     public ResponseEntity<?> autocomplete(@RequestParam String keyword) {
@@ -66,8 +69,18 @@ public class CompanyController {
         return ResponseEntity.ok(company);
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> deleteCompany() {
-        return null;
+    @DeleteMapping("/{ticker}")
+    @PreAuthorize("hasRole('WRITE')")
+    public ResponseEntity<?> deleteCompany(@PathVariable String ticker) {
+        String companyName = this.companyService.deleteCompany(ticker);
+
+        // 캐쉬에서도 company 삭제해야함
+        this.clearFinanceCache(companyName);
+
+        return ResponseEntity.ok(companyName);
+    }
+
+    public void clearFinanceCache(String companyName) {
+        this.redisCacheManager.getCache(CacheKey.KEY_FINANCE).evict(companyName );
     }
 }
