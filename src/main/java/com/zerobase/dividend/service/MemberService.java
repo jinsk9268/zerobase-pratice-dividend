@@ -51,8 +51,18 @@ public class MemberService implements UserDetailsService {
         return result;
     }
 
-    // 로그인
+    // 로그인을 위한 검증
     public MemberEntity authenticate(Auth.SignIn member) {
-        return null;
+        // 인풋으로 입력받은 userId를 기반으로 저장된 member을 불러온다 (패스워드는 인코딩된 패스워드가 들어있음)
+        MemberEntity user = this.memberRepository.findByUsername(member.getUsername())
+                .orElseThrow(() -> new RuntimeException("존재하지 않는 ID 입니다."));
+
+        // 인코딩된 패스워드끼리 서로 일치하지 않는 경우
+        if (!this.passwordEncoder.matches(member.getPassword(), user.getPassword())) {
+            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+        }
+
+        // 정상적으로 일치하는 경우 user 반환
+        return user;
     }
 }
