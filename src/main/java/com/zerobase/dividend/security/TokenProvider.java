@@ -7,6 +7,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -44,6 +45,23 @@ public class TokenProvider {
                 .setExpiration(expiredDate) // 토큰 만료 시간
                 .signWith(SignatureAlgorithm.HS512, this.secretKey) // 사용할 암호화 알고리즘, 비밀키
                 .compact(); // 스트링 변환
+    }
+
+    // 토큰 유효한지 확인하는 메서드들 구현
+    public String getUsername(String token) {
+        return this.parseClaims(token).getSubject();
+    }
+
+    public boolean validateToken(String token) {
+        // 토큰이 비어있다면
+        if (!StringUtils.hasText(token)) {
+            return false;
+        }
+
+        Claims claims = this.parseClaims(token);
+
+        // 토큰의 만료 시간이 현재 시간보다 전인지 왜 !을 붙여 반전?
+        return !claims.getExpiration().before(new Date());
     }
 
     // 토큰으로 부터 클레임 정보를 가져오는 메서드 구현
