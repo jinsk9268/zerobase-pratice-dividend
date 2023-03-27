@@ -44,6 +44,7 @@ public class AuthController {
         // 사용자한테 입력받은 아이디, 패스워드 검증
         MemberEntity member = this.memberService.authenticate(request);
 
+        log.info("user login -> " + request.getUsername());
         // 일치한다면 jwt 토큰 생성 후 반환
         return ResponseEntity.ok(
                 this.tokenProvider.generateToken(member.getUsername(), member.getRoles())
